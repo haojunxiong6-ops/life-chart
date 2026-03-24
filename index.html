@@ -108,7 +108,7 @@
             margin-bottom: 16px;
             padding: 12px 16px;
             border-radius: 12px;
-            max-width: 85%;
+            max-width: 90%;
             line-height: 1.6;
             animation: fadeIn 0.3s ease;
         }
@@ -128,14 +128,58 @@
             margin-left: auto;
         }
         
-        .chat-input-area {
-            margin-top: 16px;
+        .question-block {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .question-title {
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        
+        .options {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .option {
+            padding: 10px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(255, 102, 0, 0.1);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 102, 0, 0.2);
+        }
+        
+        .input-group {
+            margin: 12px 0;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
         
         .chat-input {
-            flex: 1;
+            width: 100%;
             background: var(--bg);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -161,6 +205,7 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
+            margin-top: 10px;
         }
         
         .btn:hover {
@@ -171,6 +216,14 @@
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--card-bg);
         }
         
         .status-indicator {
@@ -199,6 +252,20 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
         }
         
         .charts-container {
@@ -316,6 +383,64 @@
             background: var(--primary);
             border-color: var(--primary);
         }
+        
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        
+        .rating-btn {
+            padding: 8px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .rating-btn:hover {
+            border-color: var(--primary);
+        }
+        
+        .rating-btn.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .dimension-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .dimension-tab {
+            padding: 8px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .dimension-tab:hover {
+            border-color: var(--primary);
+        }
+        
+        .dimension-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .dimension-tab.completed {
+            background: #00cc00;
+            border-color: #00cc00;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -332,21 +457,106 @@
         
         <div class="main-content">
             <div class="card">
-                <div class="card-title">AI 对话</div>
+                <div class="card-title">问卷调查</div>
+                <div class="dimension-tabs" id="dimensionTabs">
+                    <div class="dimension-tab active" data-dimension="emotion">情绪状态</div>
+                    <div class="dimension-tab" data-dimension="wealth">财富状况</div>
+                    <div class="dimension-tab" data-dimension="cognition">认知水平</div>
+                    <div class="dimension-tab" data-dimension="life">生活满意度</div>
+                    <div class="dimension-tab" data-dimension="daily">每日打卡</div>
+                </div>
+                
                 <div class="chat-container">
                     <div class="chat-messages" id="chatMessages">
                         <div class="message ai">
                             你好！我是人生K线图AI助手 🚀
                             <br><br>
-                            我将通过对话了解你的情绪状态、财富状况、认知水平和生活满意度，然后为你生成专属的"人生K线图"。
+                            我将通过问卷调查了解你的四个维度：
+                            <br>• 情绪状态 · 财富状况 · 认知水平 · 生活满意度
                             <br><br>
-                            请告诉我你最近的状态如何？
+                            每天还会询问你的工作状态、压力程度、幸福感和成长进度。
+                            <br><br>
+                            <strong>点击下方「开始评估」按钮开始吧！</strong>
                         </div>
                     </div>
                 </div>
-                <div class="chat-input-area">
-                    <textarea class="chat-input" id="chatInput" rows="2" placeholder="请输入你的回答..."></textarea>
-                    <button class="btn" id="sendBtn" onclick="sendMessage()">发送</button>
+                
+                <div id="questionArea" style="display: none;">
+                    <div id="questionsContainer"></div>
+                    <div style="margin-top: 16px;">
+                        <button class="btn" id="submitBtn" onclick="submitAnswers()">提交答案</button>
+                        <button class="btn btn-secondary" onclick="resetQuestionnaire()" style="margin-left: 10px;">重置</button>
+                    </div>
+                </div>
+                
+                <div id="startArea" style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="startQuestionnaire()">开始评估</button>
+                </div>
+                
+                <div id="dailyArea" style="display: none; margin-top: 20px;">
+                    <div class="question-block">
+                        <div class="question-title">📅 今日打卡</div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">今日工作状态</label>
+                            <div class="rating-group" id="workRating">
+                                <div class="rating-btn" data-value="A" onclick="selectRating('work', 'A')">A - 非常出色</div>
+                                <div class="rating-btn" data-value="B" onclick="selectRating('work', 'B')">B - 良好</div>
+                                <div class="rating-btn" data-value="C" onclick="selectRating('work', 'C')">C - 一般</div>
+                                <div class="rating-btn" data-value="D" onclick="selectRating('work', 'D')">D - 较差</div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">压力程度 (1-10)</label>
+                            <div class="rating-group" id="stressRating">
+                                <div class="rating-btn" data-value="1" onclick="selectRating('stress', 1)">1</div>
+                                <div class="rating-btn" data-value="2" onclick="selectRating('stress', 2)">2</div>
+                                <div class="rating-btn" data-value="3" onclick="selectRating('stress', 3)">3</div>
+                                <div class="rating-btn" data-value="4" onclick="selectRating('stress', 4)">4</div>
+                                <div class="rating-btn" data-value="5" onclick="selectRating('stress', 5)">5</div>
+                                <div class="rating-btn" data-value="6" onclick="selectRating('stress', 6)">6</div>
+                                <div class="rating-btn" data-value="7" onclick="selectRating('stress', 7)">7</div>
+                                <div class="rating-btn" data-value="8" onclick="selectRating('stress', 8)">8</div>
+                                <div class="rating-btn" data-value="9" onclick="selectRating('stress', 9)">9</div>
+                                <div class="rating-btn" data-value="10" onclick="selectRating('stress', 10)">10</div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">幸福程度 (1-10)</label>
+                            <div class="rating-group" id="happinessRating">
+                                <div class="rating-btn" data-value="1" onclick="selectRating('happiness', 1)">1</div>
+                                <div class="rating-btn" data-value="2" onclick="selectRating('happiness', 2)">2</div>
+                                <div class="rating-btn" data-value="3" onclick="selectRating('happiness', 3)">3</div>
+                                <div class="rating-btn" data-value="4" onclick="selectRating('happiness', 4)">4</div>
+                                <div class="rating-btn" data-value="5" onclick="selectRating('happiness', 5)">5</div>
+                                <div class="rating-btn" data-value="6" onclick="selectRating('happiness', 6)">6</div>
+                                <div class="rating-btn" data-value="7" onclick="selectRating('happiness', 7)">7</div>
+                                <div class="rating-btn" data-value="8" onclick="selectRating('happiness', 8)">8</div>
+                                <div class="rating-btn" data-value="9" onclick="selectRating('happiness', 9)">9</div>
+                                <div class="rating-btn" data-value="10" onclick="selectRating('happiness', 10)">10</div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">成长进度 (1-10)</label>
+                            <div class="rating-group" id="growthRating">
+                                <div class="rating-btn" data-value="1" onclick="selectRating('growth', 1)">1</div>
+                                <div class="rating-btn" data-value="2" onclick="selectRating('growth', 2)">2</div>
+                                <div class="rating-btn" data-value="3" onclick="selectRating('growth', 3)">3</div>
+                                <div class="rating-btn" data-value="4" onclick="selectRating('growth', 4)">4</div>
+                                <div class="rating-btn" data-value="5" onclick="selectRating('growth', 5)">5</div>
+                                <div class="rating-btn" data-value="6" onclick="selectRating('growth', 6)">6</div>
+                                <div class="rating-btn" data-value="7" onclick="selectRating('growth', 7)">7</div>
+                                <div class="rating-btn" data-value="8" onclick="selectRating('growth', 8)">8</div>
+                                <div class="rating-btn" data-value="9" onclick="selectRating('growth', 9)">9</div>
+                                <div class="rating-btn" data-value="10" onclick="selectRating('growth', 10)">10</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn" onclick="submitDailyCheck()">提交今日打卡</button>
+                    </div>
                 </div>
             </div>
             
@@ -409,7 +619,106 @@
         const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions';
         const MODEL = 'doubao-seed-2-0-pro-260215';
         
-        let conversationHistory = [];
+        // 问卷题目配置 - 4维度 x 3题 = 12题选择题
+        const questions = {
+            emotion: [
+                { id: 'e1', text: '最近一周你整体的情绪状态是？', options: [
+                    { label: 'A. 积极乐观，心情很好', value: 90 },
+                    { label: 'B. 比较平稳，偶尔波动', value: 70 },
+                    { label: 'C. 时好时坏，不太稳定', value: 50 },
+                    { label: 'D. 消极低落，感到焦虑', value: 30 }
+                ]},
+                { id: 'e2', text: '面对压力时，你的情绪调节能力如何？', options: [
+                    { label: 'A. 很快就能调整好', value: 90 },
+                    { label: 'B. 需要一些时间但能调整', value: 70 },
+                    { label: 'C. 很难自己调整', value: 40 },
+                    { label: 'D. 完全无法应对', value: 20 }
+                ]},
+                { id: 'e3', text: '你的人际关系让你感到？', options: [
+                    { label: 'A. 很温暖，很满足', value: 90 },
+                    { label: 'B. 还不错，较为满意', value: 75 },
+                    { label: 'C. 一般，有些困扰', value: 50 },
+                    { label: 'D. 孤独，压力很大', value: 30 }
+                ]}
+            ],
+            wealth: [
+                { id: 'w1', text: '你的经济收入状况属于？', options: [
+                    { label: 'A. 收入很高，财务自由', value: 95 },
+                    { label: 'B. 收入稳定，略有结余', value: 75 },
+                    { label: 'C. 收入刚好够花', value: 55 },
+                    { label: 'D. 入不敷出，有经济压力', value: 30 }
+                ]},
+                { id: 'w2', text: '你对未来的财务状况有信心吗？', options: [
+                    { label: 'A. 非常有信心', value: 90 },
+                    { label: 'B. 比较有信心', value: 70 },
+                    { label: 'C. 不太确定', value: 50 },
+                    { label: 'D. 很担心', value: 30 }
+                ]},
+                { id: 'w3', text: '你的消费习惯是？', options: [
+                    { label: 'A. 有计划储蓄，理性消费', value: 85 },
+                    { label: 'B. 大体有规划，偶尔冲动', value: 70 },
+                    { label: 'C. 经常月光，不太规划', value: 45 },
+                    { label: 'D. 入不敷出，负债消费', value: 25 }
+                ]}
+            ],
+            cognition: [
+                { id: 'c1', text: '你目前的学习状态是？', options: [
+                    { label: 'A. 持续学习，成长很快', value: 90 },
+                    { label: 'B. 有在学习，稳步前进', value: 75 },
+                    { label: 'C. 偶尔学习，进步有限', value: 50 },
+                    { label: 'D. 基本不学习，停滞不前', value: 30 }
+                ]},
+                { id: 'c2', text: '面对问题时，你的思维方式是？', options: [
+                    { label: 'A. 全面分析，善于创新', value: 90 },
+                    { label: 'B. 理性思考，逻辑清晰', value: 75 },
+                    { label: 'C. 思考较少，依赖经验', value: 50 },
+                    { label: 'D. 思维混乱，容易纠结', value: 30 }
+                ]},
+                { id: 'c3', text: '你对新事物的接受程度？', options: [
+                    { label: 'A. 积极拥抱，善于尝试', value: 90 },
+                    { label: 'B. 愿意尝试，较为开放', value: 75 },
+                    { label: 'C. 犹豫观望，不太敢试', value: 50 },
+                    { label: 'D. 排斥拒绝，因循守旧', value: 30 }
+                ]}
+            ],
+            life: [
+                { id: 'l1', text: '你对目前的生活质量满意吗？', options: [
+                    { label: 'A. 非常满意，生活幸福', value: 90 },
+                    { label: 'B. 比较满意，还不错', value: 75 },
+                    { label: 'C. 一般，不太满意', value: 50 },
+                    { label: 'D. 不满意，很糟', value: 30 }
+                ]},
+                { id: 'l2', text: '你的工作/事业状态是？', options: [
+                    { label: 'A. 很有成就感，充满热情', value: 90 },
+                    { label: 'B. 还不错，有一定成就感', value: 75 },
+                    { label: 'C. 一般，只是谋生', value: 50 },
+                    { label: 'D. 很痛苦，想逃离', value: 25 }
+                ]},
+                { id: 'l3', text: '你的健康状况是？', options: [
+                    { label: 'A. 身体很好，精力充沛', value: 90 },
+                    { label: 'B. 还不错，偶尔小问题', value: 75 },
+                    { label: 'C. 亚健康，有些问题', value: 50 },
+                    { label: 'D. 健康状况较差', value: 30 }
+                ]}
+            ]
+        };
+        
+        // 8个填空题
+        const fillInQuestions = [
+            { id: 'f1', label: '最近让你最有成就感的一件事是什么？', key: 'achievement' },
+            { id: 'f2', label: '目前你最想实现的目标是什么？', key: 'goal' },
+            { id: 'f3', label: '你最大的压力来源是什么？', key: 'stress_source' },
+            { id: 'f4', label: '你最感激的人或事是什么？', key: 'gratitude' },
+            { id: 'f5', label: '过去一年你最大的成长是什么？', key: 'growth' },
+            { id: 'f6', label: '你理想中的生活是什么样的？', key: 'ideal_life' },
+            { id: 'f7', label: '目前最困扰你的问题是什么？', key: 'problem' },
+            { id: 'f8', label: '你想对自己说什么？', key: 'self_message' }
+        ];
+        
+        let currentDimension = 'emotion';
+        let answers = {};
+        let fillInAnswers = {};
+        let dailyAnswers = {};
         let evaluationData = null;
         let kLineChart = null;
         let heatmapChart = null;
@@ -515,41 +824,128 @@
             });
         }
         
-        // 发送消息
-        async function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const sendBtn = document.getElementById('sendBtn');
-            const message = input.value.trim();
+        // 开始问卷
+        function startQuestionnaire() {
+            document.getElementById('startArea').style.display = 'none';
+            document.getElementById('questionArea').style.display = 'block';
+            currentDimension = 'emotion';
+            renderQuestions();
+            updateDimensionTabs();
+            addMessage('请完成以下问卷，每完成一个维度后可切换到其他维度。', 'ai');
+        }
+        
+        // 渲染题目
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const dimensionQuestions = questions[currentDimension];
             
-            if (!message || sendBtn.disabled) return;
+            let html = `<div class="question-block">
+                <div class="question-title">${getDimensionName(currentDimension)} (3题选择题)</div>`;
             
-            // 添加用户消息
-            addMessage(message, 'user');
-            input.value = '';
+            dimensionQuestions.forEach(q => {
+                html += `<div class="input-group">
+                    <label class="input-label">${q.text}</label>
+                    <div class="options">`;
+                q.options.forEach(opt => {
+                    const isSelected = answers[q.id] === opt.value;
+                    html += `<div class="option ${isSelected ? 'selected' : ''}" onclick="selectOption('${q.id}', ${opt.value}, this)">${opt.label}</div>`;
+                });
+                html += `</div></div>`;
+            });
             
-            // 显示等待状态
-            sendBtn.disabled = true;
+            html += `</div>`;
+            
+            // 添加填空题
+            html += `<div class="question-block">
+                <div class="question-title">补充信息 (8题填空)</div>`;
+            fillInQuestions.forEach(q => {
+                const val = fillInAnswers[q.key] || '';
+                html += `<div class="input-group">
+                    <label class="input-label">${q.label}</label>
+                    <textarea class="chat-input" rows="2" placeholder="请输入..." onchange="saveFillIn('${q.key}', this.value)">${val}</textarea>
+                </div>`;
+            });
+            html += `</div>`;
+            
+            container.innerHTML = html;
+        }
+        
+        // 获取维度名称
+        function getDimensionName(dim) {
+            const names = {
+                emotion: '情绪状态',
+                wealth: '财富状况',
+                cognition: '认知水平',
+                life: '生活满意度'
+            };
+            return names[dim] || dim;
+        }
+        
+        // 选择选项
+        function selectOption(questionId, value, element) {
+            answers[questionId] = value;
+            element.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+        
+        // 保存填空答案
+        function saveFillIn(key, value) {
+            fillInAnswers[key] = value;
+        }
+        
+        // 更新维度标签
+        function updateDimensionTabs() {
+            document.querySelectorAll('.dimension-tab').forEach(tab => {
+                const dim = tab.dataset.dimension;
+                tab.classList.remove('active');
+                if (dim === currentDimension) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+        
+        // 切换维度
+        function switchDimension(dim) {
+            currentDimension = dim;
+            renderQuestions();
+            updateDimensionTabs();
+        }
+        
+        // 提交答案
+        async function submitAnswers() {
+            // 检查是否完成所有维度
+            const requiredQuestions = ['e1', 'e2', 'e3', 'w1', 'w2', 'w3', 'c1', 'c2', 'c3', 'l1', 'l2', 'l3'];
+            const missing = requiredQuestions.filter(q => !answers[q]);
+            
+            if (missing.length > 0) {
+                alert('请完成所有12道选择题！');
+                return;
+            }
+            
             document.getElementById('statusDot').classList.add('waiting');
-            document.getElementById('statusText').textContent = 'AI思考中...';
+            document.getElementById('statusText').textContent = 'AI评估中...';
             
-            conversationHistory.push({ role: 'user', content: message });
+            // 计算各维度分数
+            const emotionScore = Math.round((answers.e1 + answers.e2 + answers.e3) / 3);
+            const wealthScore = Math.round((answers.w1 + answers.w2 + answers.w3) / 3);
+            const cognitionScore = Math.round((answers.c1 + answers.c2 + answers.c3) / 3);
+            const lifeScore = Math.round((answers.l1 + answers.l2 + answers.l3) / 3);
             
-            // 构建提示词
-            const systemPrompt = `你是一个人生阶段评估AI助手。你需要通过对话了解用户的以下几个维度：
-1. 情绪状态（最近的情绪如何、是否稳定）
-2. 财富状况（经济状况、收入水平）
-3. 认知水平（思维状态、学习能力）
-4. 生活满意度（整体生活质量、人际关系）
+            // 调用AI生成评估
+            const systemPrompt = `你是一个人生阶段评估AI助手。请根据用户的问卷答案，给出综合评估。
 
-请根据用户的回答，进行友好的对话追问（最多2-3个问题），收集足够信息后给出评估。
+用户问卷数据：
+- 情绪状态：${emotionScore}分
+- 财富状况：${wealthScore}分  
+- 认知水平：${cognitionScore}分
+- 生活满意度：${lifeScore}分
 
-当你认为收集到足够信息时，请以以下JSON格式返回评估结果：
-{"emotion": 分数(0-100), "wealth": 分数(0-100), "cognition": 分数(0-100), "life": 分数(0-100), "phase": "波峰/波谷/平缓/上升期/下降期", "summary": "简短总结"}
+用户补充信息：
+${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
 
-注意：只有在明确告知用户评估完成时才返回JSON格式，其他时候用自然语言回复。`;
-            
-            conversationHistory.push({ role: 'system', content: systemPrompt });
-            
+请返回JSON格式的评估结果：
+{"emotion": 分数, "wealth": 分数, "cognition": 分数, "life": 分数, "phase": "波峰/波谷/平缓/上升期/下降期", "summary": "简短总结(50字以内)"}`;
+
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -559,51 +955,62 @@
                     },
                     body: JSON.stringify({
                         model: MODEL,
-                        messages: conversationHistory,
+                        messages: [{ role: 'user', content: systemPrompt }],
                         temperature: 0.7,
-                        max_tokens: 1024
+                        max_tokens: 512
                     })
                 });
                 
                 const data = await response.json();
                 const aiResponse = data.choices[0].message.content;
                 
-                conversationHistory.push({ role: 'assistant', content: aiResponse });
-                addMessage(aiResponse, 'ai');
-                
-                // 检查是否是评估结果
-                if (aiResponse.includes('{')) {
-                    try {
-                        const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
-                        if (jsonMatch) {
-                            evaluationData = JSON.parse(jsonMatch[0]);
-                            updateEvaluation(evaluationData);
-                        }
-                    } catch (e) {
-                        console.log('解析评估结果失败', e);
+                // 解析AI返回的评估
+                try {
+                    const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        evaluationData = JSON.parse(jsonMatch[0]);
                     }
+                } catch (e) {
+                    evaluationData = {
+                        emotion: emotionScore,
+                        wealth: wealthScore,
+                        cognition: cognitionScore,
+                        life: lifeScore,
+                        phase: getPhase(emotionScore, wealthScore, cognitionScore, lifeScore),
+                        summary: '基于问卷评估的人生阶段'
+                    };
                 }
+                
+                updateEvaluation(evaluationData);
+                
             } catch (error) {
-                addMessage('抱歉，发生了错误，请稍后重试。', 'ai');
+                evaluationData = {
+                    emotion: emotionScore,
+                    wealth: wealthScore,
+                    cognition: cognitionScore,
+                    life: lifeScore,
+                    phase: getPhase(emotionScore, wealthScore, cognitionScore, lifeScore),
+                    summary: '基于问卷评估的人生阶段'
+                };
+                updateEvaluation(evaluationData);
                 console.error(error);
             }
             
-            sendBtn.disabled = false;
             document.getElementById('statusDot').classList.remove('waiting');
-            document.getElementById('statusText').textContent = '准备就绪';
+            document.getElementById('statusText').textContent = '评估完成';
         }
         
-        // 添加消息到界面
-        function addMessage(content, type) {
-            const container = document.getElementById('chatMessages');
-            const div = document.createElement('div');
-            div.className = `message ${type}`;
-            div.innerHTML = content;
-            container.appendChild(div);
-            container.scrollTop = container.scrollHeight;
+        // 根据分数判断阶段
+        function getPhase(emotion, wealth, cognition, life) {
+            const avg = (emotion + wealth + cognition + life) / 4;
+            if (avg >= 80) return '波峰';
+            if (avg >= 60) return '上升期';
+            if (avg >= 40) return '平缓';
+            if (avg >= 25) return '下降期';
+            return '波谷';
         }
         
-        // 更新评估结果
+        // 更新评估结果显示
         function updateEvaluation(data) {
             document.getElementById('evaluationResult').style.display = 'block';
             
@@ -635,14 +1042,102 @@
             heatmapChart.data.datasets[0].data = [data.emotion, data.wealth, data.cognition, data.life];
             heatmapChart.update();
             
+            // 提示完成
+            addMessage('感谢完成问卷！🎉<br><br>你也可以点击「每日打卡」标签记录今天的状态。', 'ai');
+            
+            // 切换到每日打卡标签
+            document.querySelector('[data-dimension="daily"]').click();
+            
             // 保存到历史
             saveToHistory(data, today);
+        }
+        
+        // 选择每日评级
+        function selectRating(type, value) {
+            dailyAnswers[type] = value;
+            const group = document.getElementById(type + 'Rating');
+            group.querySelectorAll('.rating-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (parseInt(btn.dataset.value) === value || btn.dataset.value === value) {
+                    btn.classList.add('selected');
+                }
+            });
+        }
+        
+        // 提交每日打卡
+        function submitDailyCheck() {
+            if (!dailyAnswers.work || !dailyAnswers.stress || !dailyAnswers.happiness || !dailyAnswers.growth) {
+                alert('请完成所有每日评级！');
+                return;
+            }
+            
+            const today = new Date().toLocaleDateString('zh-CN');
+            
+            // 转换为数值分数
+            const workScores = { A: 95, B: 75, C: 50, D: 25 };
+            const dailyScore = Math.round((
+                workScores[dailyAnswers.work] + 
+                (100 - dailyAnswers.stress * 8) + 
+                dailyAnswers.happiness * 10 + 
+                dailyAnswers.growth * 10
+            ) / 4);
+            
+            // 更新K线图
+            const labels = kLineChart.data.labels;
+            const lastDate = labels[labels.length - 1];
+            
+            if (lastDate === today) {
+                kLineChart.data.datasets[0].data[kLineChart.data.datasets[0].data.length - 1] = dailyScore;
+            } else {
+                kLineChart.data.labels.push(today);
+                kLineChart.data.datasets[0].data.push(dailyScore);
+            }
+            kLineChart.update();
+            
+            // 保存到历史
+            const history = JSON.parse(localStorage.getItem('lifeHistory') || '[]');
+            history.unshift({
+                date: today,
+                type: 'daily',
+                work: dailyAnswers.work,
+                stress: dailyAnswers.stress,
+                happiness: dailyAnswers.happiness,
+                growth: dailyAnswers.growth,
+                score: dailyScore,
+                phase: dailyScore >= 80 ? '波峰' : dailyScore >= 60 ? '上升期' : dailyScore >= 40 ? '平缓' : dailyScore >= 25 ? '下降期' : '波谷'
+            });
+            localStorage.setItem('lifeHistory', JSON.stringify(history.slice(0, 30)));
+            renderHistory();
+            
+            alert('今日打卡完成！📅');
+            
+            dailyAnswers = {};
+            document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('selected'));
+        }
+        
+        // 重置问卷
+        function resetQuestionnaire() {
+            answers = {};
+            fillInAnswers = {};
+            currentDimension = 'emotion';
+            renderQuestions();
+            updateDimensionTabs();
+        }
+        
+        // 添加消息到界面
+        function addMessage(content, type) {
+            const container = document.getElementById('chatMessages');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = content;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
         }
         
         // 保存到历史记录
         function saveToHistory(data, date) {
             const history = JSON.parse(localStorage.getItem('lifeHistory') || '[]');
-            history.unshift({ ...data, date });
+            history.unshift({ ...data, date, type: 'evaluation' });
             localStorage.setItem('lifeHistory', JSON.stringify(history.slice(0, 30)));
             renderHistory();
         }
@@ -657,13 +1152,20 @@
                 return;
             }
             
-            container.innerHTML = history.map(item => `
-                <div class="history-item">
+            container.innerHTML = history.map(item => {
+                if (item.type === 'daily') {
+                    return `<div class="history-item">
+                        <div class="history-date">${item.date} · 每日打卡</div>
+                        <div>工作:${item.work} 压力:${item.stress} 幸福:${item.happiness} 成长:${item.growth}</div>
+                        <div style="color: var(--text-muted); margin-top: 8px;">综合得分: ${item.score}</div>
+                    </div>`;
+                }
+                return `<div class="history-item">
                     <div class="history-date">${item.date} · ${item.phase}</div>
                     <div>情绪:${item.emotion} 财富:${item.wealth} 认知:${item.cognition} 生活:${item.life}</div>
                     <div style="color: var(--text-muted); margin-top: 8px;">${item.summary}</div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
         
         // 切换标签页
@@ -679,12 +1181,19 @@
             }
         }
         
-        // 回车发送
-        document.getElementById('chatInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
+        // 维度标签点击事件
+        document.querySelectorAll('.dimension-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const dim = this.dataset.dimension;
+                if (dim === 'daily') {
+                    document.getElementById('dailyArea').style.display = 'block';
+                    document.getElementById('questionArea').style.display = 'none';
+                } else {
+                    document.getElementById('dailyArea').style.display = 'none';
+                    document.getElementById('questionArea').style.display = 'block';
+                    switchDimension(dim);
+                }
+            });
         });
         
         // 初始化
