@@ -21,6 +21,10 @@
             --text: #ffffff;
             --text-muted: #888888;
             --border: #2a2a2a;
+            --emotion: #00ff00;
+            --wealth: #ffaa00;
+            --cognition: #4488ff;
+            --life: #ff6600;
         }
         
         body {
@@ -31,7 +35,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -62,7 +66,7 @@
             margin-top: 30px;
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -93,7 +97,7 @@
         }
         
         .chat-container {
-            height: 400px;
+            height: 350px;
             display: flex;
             flex-direction: column;
         }
@@ -178,23 +182,6 @@
             font-size: 0.9rem;
         }
         
-        .chat-input {
-            width: 100%;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px 16px;
-            color: var(--text);
-            font-size: 1rem;
-            resize: none;
-            font-family: inherit;
-        }
-        
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
         .btn {
             background: var(--primary);
             color: white;
@@ -220,10 +207,6 @@
         
         .btn-secondary {
             background: var(--border);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--card-bg);
         }
         
         .status-indicator {
@@ -254,20 +237,6 @@
             50% { opacity: 0.5; }
         }
         
-        .progress-bar {
-            height: 6px;
-            background: var(--border);
-            border-radius: 3px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
         .charts-container {
             display: grid;
             gap: 20px;
@@ -286,6 +255,7 @@
             color: var(--text-muted);
         }
         
+        /* 详细评估结果样式 */
         .evaluation-result {
             background: var(--card-bg);
             border-radius: 16px;
@@ -294,36 +264,110 @@
             margin-top: 20px;
         }
         
-        .result-grid {
+        .result-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .result-phase {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .result-phase.peak { background: linear-gradient(135deg, #00ff00, #00cc00); color: #000; }
+        .result-phase.valley { background: linear-gradient(135deg, #ff4444, #cc0000); color: #fff; }
+        .result-phase.flat { background: linear-gradient(135deg, #4488ff, #2266cc); color: #fff; }
+        .result-phase.rise { background: linear-gradient(135deg, #00ccff, #0099cc); color: #000; }
+        .result-phase.fall { background: linear-gradient(135deg, #ffaa00, #cc8800); color: #000; }
+        
+        .result-summary {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* 雷达图区域 */
+        .radar-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        /* 维度详细卡片 */
+        .dimension-detail {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             margin-top: 20px;
         }
         
         @media (max-width: 768px) {
-            .result-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .dimension-detail {
+                grid-template-columns: 1fr;
             }
         }
         
-        .result-item {
-            text-align: center;
-            padding: 20px;
+        .dimension-card {
             background: var(--bg);
             border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid;
         }
         
-        .result-value {
-            font-size: 2rem;
+        .dimension-card.emotion { border-color: var(--emotion); }
+        .dimension-card.wealth { border-color: var(--wealth); }
+        .dimension-card.cognition { border-color: var(--cognition); }
+        .dimension-card.life { border-color: var(--life); }
+        
+        .dimension-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .dimension-name {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .dimension-score {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--primary);
         }
         
-        .result-label {
-            font-size: 0.9rem;
+        .dimension-card.emotion .dimension-score { color: var(--emotion); }
+        .dimension-card.wealth .dimension-score { color: var(--wealth); }
+        .dimension-card.cognition .dimension-score { color: var(--cognition); }
+        .dimension-card.life .dimension-score { color: var(--life); }
+        
+        .dimension-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .dimension-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .dimension-card.emotion .dimension-fill { background: var(--emotion); }
+        .dimension-card.wealth .dimension-fill { background: var(--wealth); }
+        .dimension-card.cognition .dimension-fill { background: var(--cognition); }
+        .dimension-card.life .dimension-fill { background: var(--life); }
+        
+        .dimension-desc {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-top: 8px;
+            line-height: 1.5;
         }
         
         .phase-badge {
@@ -332,16 +376,6 @@
             border-radius: 20px;
             font-size: 1.2rem;
             font-weight: 500;
-            margin-top: 20px;
-        }
-        
-        .phase-peak { background: #00ff00; color: #000; }
-        .phase-valley { background: #ff4444; color: #fff; }
-        .phase-flat { background: #4488ff; color: #fff; }
-        .phase-rise { background: #00ccff; color: #000; }
-        .phase-fall { background: #ffaa00; color: #000; }
-        
-        .history-panel {
             margin-top: 20px;
         }
         
@@ -436,10 +470,24 @@
             border-color: var(--primary);
         }
         
-        .dimension-tab.completed {
+        .completion-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
             background: #00cc00;
-            border-color: #00cc00;
             color: #000;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .dimension-tab-wrapper {
+            position: relative;
         }
     </style>
 </head>
@@ -459,11 +507,21 @@
             <div class="card">
                 <div class="card-title">问卷调查</div>
                 <div class="dimension-tabs" id="dimensionTabs">
-                    <div class="dimension-tab active" data-dimension="emotion">情绪状态</div>
-                    <div class="dimension-tab" data-dimension="wealth">财富状况</div>
-                    <div class="dimension-tab" data-dimension="cognition">认知水平</div>
-                    <div class="dimension-tab" data-dimension="life">生活满意度</div>
-                    <div class="dimension-tab" data-dimension="daily">每日打卡</div>
+                    <div class="dimension-tab-wrapper">
+                        <div class="dimension-tab active" data-dimension="emotion" onclick="switchDimension('emotion')">情绪状态</div>
+                    </div>
+                    <div class="dimension-tab-wrapper">
+                        <div class="dimension-tab" data-dimension="wealth" onclick="switchDimension('wealth')">财富状况</div>
+                    </div>
+                    <div class="dimension-tab-wrapper">
+                        <div class="dimension-tab" data-dimension="cognition" onclick="switchDimension('cognition')">认知水平</div>
+                    </div>
+                    <div class="dimension-tab-wrapper">
+                        <div class="dimension-tab" data-dimension="life" onclick="switchDimension('life')">生活满意度</div>
+                    </div>
+                    <div class="dimension-tab-wrapper">
+                        <div class="dimension-tab" data-dimension="daily" onclick="showDaily()">每日打卡</div>
+                    </div>
                 </div>
                 
                 <div class="chat-container">
@@ -474,9 +532,7 @@
                             我将通过问卷调查了解你的四个维度：
                             <br>• 情绪状态 · 财富状况 · 认知水平 · 生活满意度
                             <br><br>
-                            每天还会询问你的工作状态、压力程度、幸福感和成长进度。
-                            <br><br>
-                            <strong>点击下方「开始评估」按钮开始吧！</strong>
+                            <strong>点击「开始评估」按钮开始答题吧！</strong>
                         </div>
                     </div>
                 </div>
@@ -484,7 +540,7 @@
                 <div id="questionArea" style="display: none;">
                     <div id="questionsContainer"></div>
                     <div style="margin-top: 16px;">
-                        <button class="btn" id="submitBtn" onclick="submitAnswers()">提交答案</button>
+                        <button class="btn" id="submitBtn" onclick="submitAnswers()">提交评估</button>
                         <button class="btn btn-secondary" onclick="resetQuestionnaire()" style="margin-left: 10px;">重置</button>
                     </div>
                 </div>
@@ -567,27 +623,16 @@
                 </div>
                 
                 <div class="evaluation-result" id="evaluationResult" style="display: none;">
-                    <div class="card-title">综合评估</div>
-                    <div class="result-grid">
-                        <div class="result-item">
-                            <div class="result-value" id="emotionScore">-</div>
-                            <div class="result-label">情绪指数</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="result-value" id="wealthScore">-</div>
-                            <div class="result-label">财富指数</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="result-value" id="cognitionScore">-</div>
-                            <div class="result-label">认知指数</div>
-                        </div>
-                        <div class="result-item">
-                            <div class="result-value" id="lifeScore">-</div>
-                            <div class="result-label">生活指数</div>
-                        </div>
+                    <div class="result-header">
+                        <span class="result-phase" id="phaseBadge">-</span>
+                        <div class="result-summary" id="phaseSummary"></div>
                     </div>
-                    <div style="text-align: center;">
-                        <span class="phase-badge" id="phaseBadge">-</span>
+                    
+                    <div class="radar-container">
+                        <canvas id="radarChart" width="280" height="280"></canvas>
+                    </div>
+                    
+                    <div class="dimension-detail" id="dimensionDetail">
                     </div>
                 </div>
             </div>
@@ -601,8 +646,6 @@
             <div id="heatmapContainer" style="display: none;">
                 <div class="chart-title">人生热力图（按维度）</div>
                 <canvas id="heatmapChart" height="100"></canvas>
-                <div class="chart-title" style="margin-top: 20px;">人生热力图（按日期）</div>
-                <canvas id="heatmapChart2" height="100"></canvas>
             </div>
         </div>
         
@@ -703,26 +746,38 @@
             ]
         };
         
-        // 8个填空题
-        const fillInQuestions = [
-            { id: 'f1', label: '最近让你最有成就感的一件事是什么？', key: 'achievement' },
-            { id: 'f2', label: '目前你最想实现的目标是什么？', key: 'goal' },
-            { id: 'f3', label: '你最大的压力来源是什么？', key: 'stress_source' },
-            { id: 'f4', label: '你最感激的人或事是什么？', key: 'gratitude' },
-            { id: 'f5', label: '过去一年你最大的成长是什么？', key: 'growth' },
-            { id: 'f6', label: '你理想中的生活是什么样的？', key: 'ideal_life' },
-            { id: 'f7', label: '目前最困扰你的问题是什么？', key: 'problem' },
-            { id: 'f8', label: '你想对自己说什么？', key: 'self_message' }
-        ];
+        // 维度描述
+        const dimensionDescriptions = {
+            emotion: {
+                good: '情绪管理能力强，心态积极乐观，人际关系和谐',
+                normal: '情绪较为稳定，但有时会波动，需要更好地调节',
+                bad: '情绪较为低落，建议关注心理健康，适当放松'
+            },
+            wealth: {
+                good: '财务状况良好，有稳定的收入和储蓄规划',
+                normal: '经济状况基本稳定，建议加强理财规划',
+                bad: '财务压力较大，建议重新规划收支结构'
+            },
+            cognition: {
+                good: '思维活跃，学习能力强，善于接受新事物',
+                normal: '认知水平良好，保持持续学习的习惯会更好',
+                bad: '建议多思考多学习，拓展思维和视野'
+            },
+            life: {
+                good: '生活质量很高，工作和生活较为平衡',
+                normal: '生活状态一般，可以尝试寻找更多幸福感',
+                bad: '建议重新审视生活重心，调整状态'
+            }
+        };
         
         let currentDimension = 'emotion';
         let answers = {};
-        let fillInAnswers = {};
+        let completedDimensions = new Set();
         let dailyAnswers = {};
         let evaluationData = null;
         let kLineChart = null;
+        let radarChart = null;
         let heatmapChart = null;
-        let heatmapChart2 = null;
         let currentTab = 'kline';
         
         // 初始化图表
@@ -789,6 +844,53 @@
                 }
             });
             
+            // 雷达图
+            const ctxRadar = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['情绪', '财富', '认知', '生活'],
+                    datasets: [{
+                        label: '当前状态',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: 'rgba(255, 102, 0, 0.3)',
+                        borderColor: '#ff6600',
+                        pointBackgroundColor: '#ff6600',
+                        pointBorderColor: '#fff',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                color: '#2a2a2a'
+                            },
+                            angleLines: {
+                                color: '#2a2a2a'
+                            },
+                            pointLabels: {
+                                color: '#fff',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
             const ctx2 = document.getElementById('heatmapChart').getContext('2d');
             heatmapChart = new Chart(ctx2, {
                 type: 'bar',
@@ -829,9 +931,10 @@
             document.getElementById('startArea').style.display = 'none';
             document.getElementById('questionArea').style.display = 'block';
             currentDimension = 'emotion';
+            completedDimensions.clear();
             renderQuestions();
             updateDimensionTabs();
-            addMessage('请完成以下问卷，每完成一个维度后可切换到其他维度。', 'ai');
+            addMessage('请依次完成四个维度的问卷。点击上方标签切换维度，全部完成后点击「提交评估」。', 'ai');
         }
         
         // 渲染题目
@@ -854,19 +957,6 @@
             });
             
             html += `</div>`;
-            
-            // 添加填空题
-            html += `<div class="question-block">
-                <div class="question-title">补充信息 (8题填空)</div>`;
-            fillInQuestions.forEach(q => {
-                const val = fillInAnswers[q.key] || '';
-                html += `<div class="input-group">
-                    <label class="input-label">${q.label}</label>
-                    <textarea class="chat-input" rows="2" placeholder="请输入..." onchange="saveFillIn('${q.key}', this.value)">${val}</textarea>
-                </div>`;
-            });
-            html += `</div>`;
-            
             container.innerHTML = html;
         }
         
@@ -886,22 +976,19 @@
             answers[questionId] = value;
             element.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
-        }
-        
-        // 保存填空答案
-        function saveFillIn(key, value) {
-            fillInAnswers[key] = value;
-        }
-        
-        // 更新维度标签
-        function updateDimensionTabs() {
-            document.querySelectorAll('.dimension-tab').forEach(tab => {
-                const dim = tab.dataset.dimension;
-                tab.classList.remove('active');
-                if (dim === currentDimension) {
-                    tab.classList.add('active');
+            
+            // 标记该维度已完成
+            const dim = questionId.charAt(0);
+            const dimQuestions = { e: 'emotion', w: 'wealth', c: 'cognition', l: 'life' };
+            const dimension = dimQuestions[dim];
+            
+            if (dimension) {
+                const dimQs = questions[dimension].map(q => q.id);
+                const answered = dimQs.filter(id => answers[id]).length;
+                if (answered === 3) {
+                    completedDimensions.add(dimension);
                 }
-            });
+            }
         }
         
         // 切换维度
@@ -909,6 +996,24 @@
             currentDimension = dim;
             renderQuestions();
             updateDimensionTabs();
+        }
+        
+        // 显示每日打卡
+        function showDaily() {
+            document.getElementById('questionArea').style.display = 'none';
+            document.getElementById('dailyArea').style.display = 'block';
+            updateDimensionTabs('daily');
+        }
+        
+        // 更新维度标签
+        function updateDimensionTabs(activeDim) {
+            const dim = activeDim || currentDimension;
+            document.querySelectorAll('.dimension-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.dimension === dim) {
+                    tab.classList.add('active');
+                }
+            });
         }
         
         // 提交答案
@@ -940,9 +1045,6 @@
 - 认知水平：${cognitionScore}分
 - 生活满意度：${lifeScore}分
 
-用户补充信息：
-${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
-
 请返回JSON格式的评估结果：
 {"emotion": 分数, "wealth": 分数, "cognition": 分数, "life": 分数, "phase": "波峰/波谷/平缓/上升期/下降期", "summary": "简短总结(50字以内)"}`;
 
@@ -964,7 +1066,6 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
                 const data = await response.json();
                 const aiResponse = data.choices[0].message.content;
                 
-                // 解析AI返回的评估
                 try {
                     const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
                     if (jsonMatch) {
@@ -1010,24 +1111,59 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
             return '波谷';
         }
         
+        // 获取描述
+        function getDimensionDesc(dim, score) {
+            const desc = dimensionDescriptions[dim];
+            if (score >= 75) return desc.good;
+            if (score >= 50) return desc.normal;
+            return desc.bad;
+        }
+        
         // 更新评估结果显示
         function updateEvaluation(data) {
             document.getElementById('evaluationResult').style.display = 'block';
             
-            document.getElementById('emotionScore').textContent = data.emotion;
-            document.getElementById('wealthScore').textContent = data.wealth;
-            document.getElementById('cognitionScore').textContent = data.cognition;
-            document.getElementById('lifeScore').textContent = data.life;
+            const phaseBadge = document.getElementById('phaseBadge');
+            phaseBadge.textContent = data.phase;
+            phaseBadge.className = 'result-phase';
             
-            const badge = document.getElementById('phaseBadge');
-            badge.textContent = data.phase;
-            badge.className = 'phase-badge';
+            if (data.phase === '波峰') phaseBadge.classList.add('peak');
+            else if (data.phase === '波谷') phaseBadge.classList.add('valley');
+            else if (data.phase === '平缓') phaseBadge.classList.add('flat');
+            else if (data.phase.includes('上升')) phaseBadge.classList.add('rise');
+            else if (data.phase.includes('下降')) phaseBadge.classList.add('fall');
             
-            if (data.phase === '波峰') badge.classList.add('phase-peak');
-            else if (data.phase === '波谷') badge.classList.add('phase-valley');
-            else if (data.phase === '平缓') badge.classList.add('phase-flat');
-            else if (data.phase.includes('上升')) badge.classList.add('phase-rise');
-            else if (data.phase.includes('下降')) badge.classList.add('phase-fall');
+            document.getElementById('phaseSummary').textContent = data.summary;
+            
+            // 更新雷达图
+            radarChart.data.datasets[0].data = [data.emotion, data.wealth, data.cognition, data.life];
+            radarChart.update();
+            
+            // 更新热力图
+            heatmapChart.data.datasets[0].data = [data.emotion, data.wealth, data.cognition, data.life];
+            heatmapChart.update();
+            
+            // 生成详细维度卡片
+            const dimensionDetail = document.getElementById('dimensionDetail');
+            const dimensions = [
+                { key: 'emotion', name: '情绪状态', score: data.emotion, icon: '😊' },
+                { key: 'wealth', name: '财富状况', score: data.wealth, icon: '💰' },
+                { key: 'cognition', name: '认知水平', score: data.cognition, icon: '🧠' },
+                { key: 'life', name: '生活满意度', score: data.life, icon: '🏠' }
+            ];
+            
+            dimensionDetail.innerHTML = dimensions.map(dim => `
+                <div class="dimension-card ${dim.key}">
+                    <div class="dimension-header">
+                        <span class="dimension-name">${dim.icon} ${dim.name}</span>
+                        <span class="dimension-score">${dim.score}</span>
+                    </div>
+                    <div class="dimension-bar">
+                        <div class="dimension-fill" style="width: ${dim.score}%"></div>
+                    </div>
+                    <div class="dimension-desc">${getDimensionDesc(dim.key, dim.score)}</div>
+                </div>
+            `).join('');
             
             // 更新K线图
             const today = new Date().toLocaleDateString('zh-CN');
@@ -1038,14 +1174,10 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
             kLineChart.data.datasets[3].data.push(data.cognition);
             kLineChart.update();
             
-            // 更新热力图
-            heatmapChart.data.datasets[0].data = [data.emotion, data.wealth, data.cognition, data.life];
-            heatmapChart.update();
-            
             // 提示完成
-            addMessage('感谢完成问卷！🎉<br><br>你也可以点击「每日打卡」标签记录今天的状态。', 'ai');
+            addMessage('评估完成！🎉 点击「每日打卡」可以记录今天的状态。', 'ai');
             
-            // 切换到每日打卡标签
+            // 切换到每日打卡
             document.querySelector('[data-dimension="daily"]').click();
             
             // 保存到历史
@@ -1073,7 +1205,6 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
             
             const today = new Date().toLocaleDateString('zh-CN');
             
-            // 转换为数值分数
             const workScores = { A: 95, B: 75, C: 50, D: 25 };
             const dailyScore = Math.round((
                 workScores[dailyAnswers.work] + 
@@ -1082,7 +1213,6 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
                 dailyAnswers.growth * 10
             ) / 4);
             
-            // 更新K线图
             const labels = kLineChart.data.labels;
             const lastDate = labels[labels.length - 1];
             
@@ -1094,7 +1224,6 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
             }
             kLineChart.update();
             
-            // 保存到历史
             const history = JSON.parse(localStorage.getItem('lifeHistory') || '[]');
             history.unshift({
                 date: today,
@@ -1118,7 +1247,7 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
         // 重置问卷
         function resetQuestionnaire() {
             answers = {};
-            fillInAnswers = {};
+            completedDimensions.clear();
             currentDimension = 'emotion';
             renderQuestions();
             updateDimensionTabs();
@@ -1180,21 +1309,6 @@ ${Object.entries(fillInAnswers).map(([k, v]) => `${k}: ${v}`).join('\n')}
                 document.getElementById('heatmapContainer').style.display = 'none';
             }
         }
-        
-        // 维度标签点击事件
-        document.querySelectorAll('.dimension-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const dim = this.dataset.dimension;
-                if (dim === 'daily') {
-                    document.getElementById('dailyArea').style.display = 'block';
-                    document.getElementById('questionArea').style.display = 'none';
-                } else {
-                    document.getElementById('dailyArea').style.display = 'none';
-                    document.getElementById('questionArea').style.display = 'block';
-                    switchDimension(dim);
-                }
-            });
-        });
         
         // 初始化
         initCharts();
